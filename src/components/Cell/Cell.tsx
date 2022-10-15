@@ -4,7 +4,7 @@ import { InteractiveCell } from './styles'
 function Cell() {
   const [edit, setEdit] = useState(false)
   const activate = ()=>setEdit(true)
-  const deactivate = ()=>setEdit(true)
+  const deactivate = ()=>setEdit(false)
 
   return (
     <InteractiveCell

@@ -1,11 +1,14 @@
 import React, { useContext, useEffect } from 'react'
 import { RootContext } from '../../context/rootContext'
 import { IData } from '../../context/types'
+import Cell from '../Cell'
+import { Header, RowGrid } from './styles'
 import { ISheet } from './types'
 
 const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
-  const {setData,data,setInitRows} = useContext(RootContext)
-
+  const {data,setData,initRows,setInitRows} = useContext(RootContext)
+  
+  // This function populates the table with rows and column 
   useEffect(() => {
     let initRows:IData = {}
     
@@ -19,11 +22,24 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
     setInitRows(initRows)
     setData(column)
   }, [])
-  
-  console.log(data)
 
   return (
-    <div>Sheet</div>
+    <React.Fragment>
+    {/* header */}
+    <RowGrid noColumns={noColumns}>
+        <div></div>
+        {Object.keys(initRows)?.map(key=><Header key={key}>{key}</Header>)}
+    </RowGrid>
+    
+    {/* body */}
+    {data?.map((val,index)=>(
+    <RowGrid key={index} noColumns={noColumns}>
+        <Header>{index+1}</Header>
+        {Object.keys(initRows)?.map(key=><Cell key={Math.random()}/>)}
+    </RowGrid>
+    ))}
+  
+    </React.Fragment>
   )
 }
 

@@ -1,20 +1,23 @@
 import React,{ createContext, useState } from "react";
-import { IRootContextProvider } from "./types";
+import { IData, IRootContext, IRootContextProvider } from "./types";
 
-export const RootContext = createContext({});
+export const RootContext = createContext<IRootContext>({
+    data:[], 
+    setData:(val=[])=>{},
+    initRows:{}, 
+    setInitRows:({})=>{}
+});
 
 const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({children})=>{
   const [data, setData] = useState([])
   const [initRows, setInitRows] = useState({})
 
-  const values = {
+  return <RootContext.Provider value={{
     data, 
     setData,
     initRows, 
     setInitRows
-  }
-
-  return <RootContext.Provider value={values}>{children}</RootContext.Provider>
+  }}>{children}</RootContext.Provider>
 }
 
 

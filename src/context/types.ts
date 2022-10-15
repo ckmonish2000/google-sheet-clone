@@ -13,4 +13,6 @@ export interface IRootContext{
   setData:(val:any) => void;
   initRows:IData; 
   setInitRows:(val:IData)=>void;
+  openMenu:boolean; 
+  setOpenMenu:(v:boolean) => void;
 }

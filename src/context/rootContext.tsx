@@ -5,18 +5,23 @@ export const RootContext = createContext<IRootContext>({
     data:[], 
     setData:(val=[])=>{},
     initRows:{}, 
-    setInitRows:({})=>{}
+    setInitRows:({})=>{},
+    openMenu:false, 
+    setOpenMenu:(v:boolean)=>{},
 });
 
 const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({children})=>{
   const [data, setData] = useState([])
   const [initRows, setInitRows] = useState({})
+  const [openMenu, setOpenMenu] = useState(false)
 
   return <RootContext.Provider value={{
     data, 
     setData,
     initRows, 
-    setInitRows
+    setInitRows,
+    openMenu, 
+    setOpenMenu
   }}>{children}</RootContext.Provider>
 }
 

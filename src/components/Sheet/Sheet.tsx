@@ -6,7 +6,7 @@ import { Header, Model, ModelWrap, RowGrid } from './styles'
 import { ISheet } from './types'
 
 const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
-  const {data,setData,initRows,setInitRows,openMenu,addNewRow,addNewColumn} = useContext(RootContext)
+  const {data,setData,initRows,setInitRows,openMenu,addNewElementToRow,addNewElementToColumn} = useContext(RootContext)
   const [cellValue, setcellValue] = useState<IData>({}) //holds data points for spread sheet
 
   const columnCount = Object.keys(initRows).length
@@ -80,35 +80,40 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
   },[cellValue])
   
   const addColumn = (before:boolean)=>{
-    addNewColumn();
-    if(before){
-      const currentCellData = {...cellValue}
-      const getAllKeysAfter = Object.keys(cellValue).filter(v=>v.charCodeAt(0)>="B".charCodeAt(0)).reverse()
-      
-      getAllKeysAfter.forEach(v=>{
-        let newColumnId = v.replace(v.charAt(0),String.fromCharCode(v.charCodeAt(0)+1))
-        let currentdata = currentCellData[v]
-  
-        currentCellData[v] = "null"
-        currentCellData[newColumnId] = currentdata
-      })
-  
-      setcellValue(currentCellData)
-    }else{
-      const currentCellData = {...cellValue}
-      const getAllKeysAfter = Object.keys(cellValue).filter(v=>v.charCodeAt(0)>="B".charCodeAt(0)+1).reverse()
-      
-      getAllKeysAfter.forEach(v=>{
-        let newColumnId = v.replace(v.charAt(0),String.fromCharCode(v.charCodeAt(0)+1))
-        let currentdata = currentCellData[v]
-  
-        currentCellData[v] = "null"
-        currentCellData[newColumnId] = currentdata
-      })
-  
-      setcellValue(currentCellData)
-    }
+      addNewElementToColumn();
 
+      const currentCellData = {...cellValue}
+      const beforeOrAfter = before ? "B".charCodeAt(0) :"B".charCodeAt(0)+1
+      const getAllKeysAfter = Object.keys(cellValue).filter(v=>v.charCodeAt(0)>=beforeOrAfter).reverse()
+      
+      getAllKeysAfter.forEach(v=>{
+        let newColumnId = v.replace(v.charAt(0),String.fromCharCode(v.charCodeAt(0)+1))
+        let currentdata = currentCellData[v]
+  
+        currentCellData[v] = "null"
+        currentCellData[newColumnId] = currentdata
+      })
+  
+    setcellValue(currentCellData)
+  }
+
+  const addRow = (before:boolean)=>{
+    addNewElementToRow();
+    
+    const currentCellData = {...cellValue}
+    const beforeOrAfter = before ? (v:string)=>v.charAt(1)>="2" :(v:string)=>v.charAt(1)>"2"
+    const getAllIndexAfter = Object.keys(cellValue).filter(beforeOrAfter).reverse()
+    console.log(getAllIndexAfter)
+    getAllIndexAfter.forEach(v=>{
+      let newColumnId = v.replace(v.charAt(1),eval(v.charAt(1)+"+1"))
+      let currentdata = currentCellData[v]
+
+      currentCellData[v] = "null"
+      currentCellData[newColumnId] = currentdata
+    })
+
+    console.log(currentCellData)
+    setcellValue(currentCellData)
   }
 
   return (
@@ -148,7 +153,7 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
     </RowGrid>
     ))}
   
-  <button onClick={addNewRow}>add</button>
+  <button onClick={()=>addRow(false)}>add</button>
   <button onClick={()=>addColumn(false)}>Add Column</button>
     </React.Fragment>
   )

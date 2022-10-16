@@ -8,8 +8,8 @@ export const RootContext = createContext<IRootContext>({
     setInitRows:({})=>{},
     openMenu:false, 
     setOpenMenu:(v:boolean)=>{},
-    addNewRow:()=>{},
-    addNewColumn:()=>{}
+    addNewElementToRow:()=>{},
+    addNewElementToColumn:()=>{}
 });
 
 const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({children})=>{
@@ -18,13 +18,13 @@ const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({chil
   const [openMenu, setOpenMenu] = useState(false)
 
 
-  const addNewRow = ()=>{
+  const addNewElementToRow = ()=>{
     let currentData:IData[] = [...data];
     currentData.push(initRows)
     setData(currentData)
   }
 
-  const addNewColumn = ()=>{
+  const addNewElementToColumn = ()=>{
     const currentKeys = Object.keys(initRows).length
     const rowLength = data.length
     let newRow:IData = {}
@@ -45,8 +45,8 @@ const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({chil
     setInitRows,
     openMenu, 
     setOpenMenu,
-    addNewRow,
-    addNewColumn
+    addNewElementToRow,
+    addNewElementToColumn
   }}>{children}</RootContext.Provider>
 }
 

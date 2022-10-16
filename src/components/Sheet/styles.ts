@@ -1,20 +1,21 @@
 import styled from "styled-components";
-import { IRowGrid } from "./types";
+import { IHeader, IRowGrid } from "./types";
 
 export const RowGrid = styled.div<IRowGrid>`
   display: grid;
   grid-template-columns: 32px repeat(${props=>props.noColumns},90px);
 `
 
-export const Header = styled.div`
+export const Header = styled.div<IHeader>`
   display: flex;
   justify-content: center;
   align-items: center;
   background: #FFFFFF;
-  color: grey;
   border: 1px solid;
   font-weight: 600;
   padding:5px;
+  background: ${props=>props.colSel ?"rgba(0,40,200,0.2)":"none"};
+  color: ${props=>props.colSel ?"black":"grey"};
 `
 
 export const ModelWrap = styled.div`

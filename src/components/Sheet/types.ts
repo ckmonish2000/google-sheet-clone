@@ -6,3 +6,7 @@ export interface ISheet{
 export interface IRowGrid{
   noColumns: number;
 }
+
+export interface IHeader{
+  colSel?:boolean;
+}

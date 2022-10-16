@@ -8,6 +8,7 @@ import { ISheet } from './types'
 const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
   const {data,setData,initRows,setInitRows,openMenu,addNewElementToRow,addNewElementToColumn} = useContext(RootContext)
   const [cellValue, setcellValue] = useState<IData>({}) //holds data points for spread sheet
+  const [backupCellvalue, setBackupCellvalue] = useState<IData>({})
 
   const columnCount = Object.keys(initRows).length
 
@@ -155,6 +156,41 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
   
   <button onClick={()=>addRow(false)}>add</button>
   <button onClick={()=>addColumn(false)}>Add Column</button>
+  {/*  */}
+  <button onClick={()=>{
+    setBackupCellvalue(cellValue)
+    let newCellValues = {}
+    let arr:any = []
+    const getAllKeys = Object.keys(cellValue).filter(v=>v.charAt(0)==="A")
+
+    getAllKeys.forEach(v=>{
+      let obj = {key:v,value:cellValue[v]}
+      arr.push(obj)
+    })
+
+    const sorted = arr.sort((a,b)=>{
+      return a.value.localeCompare(b.value)
+    })
+
+    sorted.forEach((v,index)=>{
+      const getAllKeysForIndex = Object.keys(cellValue).filter(v1=>v1.charAt(1)===v.key.charAt(1))
+      
+      getAllKeysForIndex.forEach(val=>{
+        const newId = val.replace(val.charAt(1),`${index+1}`)
+        newCellValues[newId] = cellValue[val]
+      })
+
+      
+      // newCellValues
+      setcellValue(newCellValues)
+    })
+
+  }}>sort</button>
+
+  <button onClick={()=>{
+    setcellValue(backupCellvalue)
+    setBackupCellvalue({})
+  }}>Reset Sort</button>
     </React.Fragment>
   )
 }

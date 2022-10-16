@@ -5,10 +5,11 @@ import Cell from '../Cell'
 import { Header, Model, ModelWrap, RowGrid } from './styles'
 import { ISheet } from './types'
 
-const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
-  const {data,setData,initRows,setInitRows,openMenu} = useContext(RootContext)
-  //holds data points
-  const [cellValue, setcellValue] = useState<IData>({})
+const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
+  const {data,setData,initRows,setInitRows,openMenu,addNewRow,addNewColumn} = useContext(RootContext)
+  const [cellValue, setcellValue] = useState<IData>({}) //holds data points for spread sheet
+
+  const columnCount = Object.keys(initRows).length
 
   // This function populates the table with rows and column 
   useEffect(() => {
@@ -27,7 +28,7 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
 
   // function to perform math calculations
   const computeValue = useCallback((val:string)=>{
-     // sum function
+     // sum function logic
      if(val.slice(0,5)==="=SUM("){
       const valueArray = val.substr(5).slice(0,-1).split(",")
       let expression = "";
@@ -51,7 +52,7 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
       }
     }
 
-
+    // logic to calculate expression
     if(val.charAt(0) === '='){
       const valueArray = val.substr(1).split(/([+*-/])/g);
 
@@ -79,6 +80,8 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
     return val
   },[cellValue])
 
+
+  
   return (
     <React.Fragment>
       
@@ -92,14 +95,14 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
     )}
     
     {/* header */}
-    <RowGrid noColumns={noColumns}>
+    <RowGrid noColumns={columnCount}>
         <div></div>
         {Object.keys(initRows)?.map(key=><Header key={key}>{key}</Header>)}
     </RowGrid>
     
     {/* body */}
     {data?.map((val,index)=>(
-    <RowGrid key={index} noColumns={noColumns}>
+    <RowGrid key={index} noColumns={columnCount}>
         <Header>{index+1}</Header>
         {/* data map */}
         {Object.keys(initRows)?.map(key=>(
@@ -116,6 +119,8 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
     </RowGrid>
     ))}
   
+  <button onClick={addNewRow}>add</button>
+  <button onClick={addNewColumn}>Add Column</button>
     </React.Fragment>
   )
 }

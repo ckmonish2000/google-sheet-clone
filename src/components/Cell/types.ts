@@ -10,4 +10,5 @@ export interface ICell{
   currentValue:string;
   cellValue: IData
   setcellValue:(v:IData)=>void;
+  computeValue:(val:string)=>string;
 }

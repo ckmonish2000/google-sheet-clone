@@ -27,6 +27,31 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
 
   // function to perform math calculations
   const computeValue = useCallback((val:string)=>{
+     // sum function
+     if(val.slice(0,5)==="=SUM("){
+      const valueArray = val.substr(5).slice(0,-1).split(",")
+      let expression = "";
+
+      valueArray.forEach((value,idx)=>{
+        value = value.toUpperCase()||"";
+        if (/^[A-z][0-9]$/g.test(value || "")) {
+          expression += cellValue[value] || "0";
+          
+          if(idx<valueArray.length-1){
+            expression += "+"
+          }
+        }
+      })
+
+      try{
+        return eval(expression)
+      }catch(e){
+        console.error(e);
+        return "Invalid"
+      }
+    }
+
+
     if(val.charAt(0) === '='){
       const valueArray = val.substr(1).split(/([+*-/])/g);
 
@@ -49,6 +74,8 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
         return "Invalid"
       }
     }
+   
+    if(val)
     return val
   },[cellValue])
 
@@ -78,11 +105,11 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
         {Object.keys(initRows)?.map(key=>(
           <Cell 
           key={`${key}${index}`}
-          rowIndex={index}
+          rowIndex={index+1}
           columnIndex={key}
           cellValue={cellValue}
           setcellValue={setcellValue}
-          currentValue={cellValue[`${key}${index}`] || ""}
+          currentValue={cellValue[`${key}${index+1}`] || ""}
           computeValue={computeValue}
           />
         ))}

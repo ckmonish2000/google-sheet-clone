@@ -176,21 +176,12 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
     <React.Fragment>
       
     {/* Menu */}
-    {openMenu!=="" &&(<Menu addColumn={addColumn} addRow={addRow} openMenu={openMenu} setOpenMenu={setOpenMenu}/>
-    // <ModelWrap>
-    //   <Model>
-    //     <div>
-    //     <h1>Menu for {openMenu}</h1>
-    //     <button onClick={()=>setOpenMenu("")}>close</button>
-    //     </div>
-
-    //     <button onClick={()=>{addColumn(true)}}>Add Column to Before</button>
-    //     <button onClick={()=>{addColumn(false)}}>Add Column to After</button>
-    //     <button onClick={()=>{addRow(true)}}>Add Row to above</button>
-    //     <button onClick={()=>{addRow(false)}}>Add Row to below</button>
-
-    //   </Model>
-    // </ModelWrap>
+    {openMenu!=="" &&(
+    <Menu 
+    openMenu={openMenu} 
+    setOpenMenu={setOpenMenu}
+    addRow={addRow} 
+    addColumn={addColumn} />
     )}
     
     {/* header */}
@@ -223,12 +214,15 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
     </RowGrid>
     ))}
 
-
-  {sortColumn!=="" &&<button onClick={()=>{
-    setcellValue(backupCellvalue)
-    setBackupCellvalue({})
-    setSortColumn("")
-  }}>Reset Sort</button>}
+  {/* reset sort data button */}
+  {sortColumn!=="" &&(
+    <button 
+      onClick={()=>{
+          setcellValue(backupCellvalue)
+          setBackupCellvalue({})
+          setSortColumn("")
+        }}>Reset Sort</button>
+    )}
 
     </React.Fragment>
   )

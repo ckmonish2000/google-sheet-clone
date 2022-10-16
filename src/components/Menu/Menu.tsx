@@ -1,20 +1,32 @@
 import React from 'react'
-import { Model, ModelWrap } from './styles'
+import { CloseBtn, MenuBtn, Model, ModelWrap, RowBetween } from './styles'
 import { IMenu } from './types'
 
 const Menu:React.FC<IMenu> = ({openMenu,setOpenMenu,addColumn,addRow}) =>{
+  const closeNow = ()=>setOpenMenu("")
+  
+  const addColumnAndClose = (val:boolean)=>{
+    addColumn(val)
+    closeNow()
+  }
+
+  const addRowAndClose = (val:boolean)=>{
+    addRow(val)
+    closeNow()
+  }
+
   return (
     <ModelWrap>
     <Model>
-      <div>
+      <RowBetween>
       <h1>Menu for {openMenu}</h1>
-      <button onClick={()=>setOpenMenu("")}>close</button>
-      </div>
+      <CloseBtn onClick={closeNow}>close</CloseBtn>
+      </RowBetween>
 
-      <button onClick={()=>{addColumn(true)}}>Add Column to Before</button>
-      <button onClick={()=>{addColumn(false)}}>Add Column to After</button>
-      <button onClick={()=>{addRow(true)}}>Add Row to above</button>
-      <button onClick={()=>{addRow(false)}}>Add Row to below</button>
+      <MenuBtn onClick={()=>{addColumnAndClose(true)}}>Add Column to Before</MenuBtn>
+      <MenuBtn onClick={()=>{addColumnAndClose(false)}}>Add Column to After</MenuBtn>
+      <MenuBtn onClick={()=>{addRowAndClose(true)}}>Add Row to above</MenuBtn>
+      <MenuBtn onClick={()=>{addRowAndClose(false)}}>Add Row to below</MenuBtn>
 
     </Model>
   </ModelWrap>

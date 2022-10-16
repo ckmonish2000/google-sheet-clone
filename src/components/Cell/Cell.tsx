@@ -32,10 +32,11 @@ const Cell:React.FC<ICell> = ({rowIndex,columnIndex,currentValue,cellValue, setc
     }
 
     return computeValue(currentValue)
-  },[edit,cellValue])
+  },[edit,cellValue,setcellValue])
 
   return (
     <InteractiveCell
+    style={{color:value==="null"?"red":""}}
     autoFocus={true}
     active={edit}
     ref={inputRef}

@@ -76,12 +76,41 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
       }
     }
    
-    if(val)
-    return val
+    return val || ""
   },[cellValue])
-
-
   
+  const addColumn = (before:boolean)=>{
+    addNewColumn();
+    if(before){
+      const currentCellData = {...cellValue}
+      const getAllKeysAfter = Object.keys(cellValue).filter(v=>v.charCodeAt(0)>="B".charCodeAt(0)).reverse()
+      
+      getAllKeysAfter.forEach(v=>{
+        let newColumnId = v.replace(v.charAt(0),String.fromCharCode(v.charCodeAt(0)+1))
+        let currentdata = currentCellData[v]
+  
+        currentCellData[v] = "null"
+        currentCellData[newColumnId] = currentdata
+      })
+  
+      setcellValue(currentCellData)
+    }else{
+      const currentCellData = {...cellValue}
+      const getAllKeysAfter = Object.keys(cellValue).filter(v=>v.charCodeAt(0)>="B".charCodeAt(0)+1).reverse()
+      
+      getAllKeysAfter.forEach(v=>{
+        let newColumnId = v.replace(v.charAt(0),String.fromCharCode(v.charCodeAt(0)+1))
+        let currentdata = currentCellData[v]
+  
+        currentCellData[v] = "null"
+        currentCellData[newColumnId] = currentdata
+      })
+  
+      setcellValue(currentCellData)
+    }
+
+  }
+
   return (
     <React.Fragment>
       
@@ -120,7 +149,7 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
     ))}
   
   <button onClick={addNewRow}>add</button>
-  <button onClick={addNewColumn}>Add Column</button>
+  <button onClick={()=>addColumn(false)}>Add Column</button>
     </React.Fragment>
   )
 }

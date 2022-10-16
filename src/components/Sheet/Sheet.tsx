@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { RootContext } from '../../context/rootContext'
 import { IData } from '../../context/types'
 import Cell from '../Cell'
@@ -24,6 +24,33 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
     setInitRows(initRows)
     setData(column)
   }, [])
+
+  // function to perform math calculations
+  const computeValue = useCallback((val:string)=>{
+    if(val.charAt(0) === '='){
+      const valueArray = val.substr(1).split(/([+*-/])/g);
+
+      let expression = "";
+      
+      valueArray.forEach((value)=>{
+        value = value.toUpperCase()||"";
+        if (/^[A-z][0-9]$/g.test(value || "")) {
+         expression +=  cellValue[value] || "0";
+        }else{
+          expression += value;
+        }
+
+      })
+
+      try{
+        return eval(expression)
+      }catch(e){
+        console.error(e);
+        return "Invalid"
+      }
+    }
+    return val
+  },[cellValue])
 
   return (
     <React.Fragment>
@@ -56,6 +83,7 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns})=>{
           cellValue={cellValue}
           setcellValue={setcellValue}
           currentValue={cellValue[`${key}${index}`] || ""}
+          computeValue={computeValue}
           />
         ))}
     </RowGrid>

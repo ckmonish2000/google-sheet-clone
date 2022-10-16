@@ -6,7 +6,7 @@ import { Header, Model, ModelWrap, RowGrid } from './styles'
 import { ISheet } from './types'
 
 const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
-  const {data,setData,initRows,setInitRows,openMenu,addNewElementToRow,addNewElementToColumn} = useContext(RootContext)
+  const {data,setData,initRows,setInitRows,openMenu,setOpenMenu,addNewElementToRow,addNewElementToColumn} = useContext(RootContext)
   const [cellValue, setcellValue] = useState<IData>({}) //holds data points for spread sheet
   const [backupCellvalue, setBackupCellvalue] = useState<IData>({})
 
@@ -82,9 +82,9 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
   
   const addColumn = (before:boolean)=>{
       addNewElementToColumn();
-
+      const columnRef = openMenu.charAt(0).toUpperCase()
       const currentCellData = {...cellValue}
-      const beforeOrAfter = before ? "B".charCodeAt(0) :"B".charCodeAt(0)+1
+      const beforeOrAfter = before ? columnRef.charCodeAt(0) :columnRef.charCodeAt(0)+1
       const getAllKeysAfter = Object.keys(cellValue).filter(v=>v.charCodeAt(0)>=beforeOrAfter).reverse()
       
       getAllKeysAfter.forEach(v=>{
@@ -100,9 +100,9 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
 
   const addRow = (before:boolean)=>{
     addNewElementToRow();
-    
+    const rowRef = openMenu.charAt(1)
     const currentCellData = {...cellValue}
-    const beforeOrAfter = before ? (v:string)=>v.charAt(1)>="2" :(v:string)=>v.charAt(1)>"2"
+    const beforeOrAfter = before ? (v:string)=>v.charAt(1)>=rowRef :(v:string)=>v.charAt(1)>rowRef
     const getAllIndexAfter = Object.keys(cellValue).filter(beforeOrAfter).reverse()
     console.log(getAllIndexAfter)
     getAllIndexAfter.forEach(v=>{
@@ -121,10 +121,19 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
     <React.Fragment>
       
     {/* Menu */}
-    {openMenu &&(
+    {openMenu!=="" &&(
     <ModelWrap>
       <Model>
-        <h1>Menu</h1>
+        <div>
+        <h1>Menu for {openMenu}</h1>
+        <button onClick={()=>setOpenMenu("")}>close</button>
+        </div>
+
+        <button onClick={()=>{addColumn(true)}}>Add Column to Before</button>
+        <button onClick={()=>{addColumn(false)}}>Add Column to After</button>
+        <button onClick={()=>{addRow(true)}}>Add Row to above</button>
+        <button onClick={()=>{addRow(false)}}>Add Row to below</button>
+
       </Model>
     </ModelWrap>
     )}

@@ -13,7 +13,7 @@ const Cell:React.FC<ICell> = ({rowIndex,columnIndex,currentValue,cellValue, setc
 
   const openMenuNow = (e:MouseEvent)=>{
     e.preventDefault();
-    setOpenMenu(true);
+    setOpenMenu(`${columnIndex}${rowIndex}`);
   }
   
   //contains logic to open menu

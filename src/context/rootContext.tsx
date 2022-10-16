@@ -6,8 +6,8 @@ export const RootContext = createContext<IRootContext>({
     setData:(val=[])=>{},
     initRows:{}, 
     setInitRows:({})=>{},
-    openMenu:false, 
-    setOpenMenu:(v:boolean)=>{},
+    openMenu:"", 
+    setOpenMenu:(v:string)=>{},
     addNewElementToRow:()=>{},
     addNewElementToColumn:()=>{}
 });
@@ -15,7 +15,7 @@ export const RootContext = createContext<IRootContext>({
 const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({children})=>{
   const [data, setData] = useState<IData[]>([])
   const [initRows, setInitRows] = useState<IData>({})
-  const [openMenu, setOpenMenu] = useState(false)
+  const [openMenu, setOpenMenu] = useState("")
 
 
   const addNewElementToRow = ()=>{

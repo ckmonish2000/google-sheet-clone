@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { RootContext } from '../../context/rootContext'
 import { IData } from '../../context/types'
 import Cell from '../Cell'
+import Menu from '../Menu'
 import { Header, Model, ModelWrap, RowGrid } from './styles'
 import { ISheet } from './types'
 
@@ -175,21 +176,21 @@ const Sheet:React.FC<ISheet> = ({noRows,noColumns,})=>{
     <React.Fragment>
       
     {/* Menu */}
-    {openMenu!=="" &&(
-    <ModelWrap>
-      <Model>
-        <div>
-        <h1>Menu for {openMenu}</h1>
-        <button onClick={()=>setOpenMenu("")}>close</button>
-        </div>
+    {openMenu!=="" &&(<Menu addColumn={addColumn} addRow={addRow} openMenu={openMenu} setOpenMenu={setOpenMenu}/>
+    // <ModelWrap>
+    //   <Model>
+    //     <div>
+    //     <h1>Menu for {openMenu}</h1>
+    //     <button onClick={()=>setOpenMenu("")}>close</button>
+    //     </div>
 
-        <button onClick={()=>{addColumn(true)}}>Add Column to Before</button>
-        <button onClick={()=>{addColumn(false)}}>Add Column to After</button>
-        <button onClick={()=>{addRow(true)}}>Add Row to above</button>
-        <button onClick={()=>{addRow(false)}}>Add Row to below</button>
+    //     <button onClick={()=>{addColumn(true)}}>Add Column to Before</button>
+    //     <button onClick={()=>{addColumn(false)}}>Add Column to After</button>
+    //     <button onClick={()=>{addRow(true)}}>Add Row to above</button>
+    //     <button onClick={()=>{addRow(false)}}>Add Row to below</button>
 
-      </Model>
-    </ModelWrap>
+    //   </Model>
+    // </ModelWrap>
     )}
     
     {/* header */}

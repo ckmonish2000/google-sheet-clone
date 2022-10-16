@@ -8,6 +8,8 @@ export const RootContext = createContext<IRootContext>({
     setInitRows:({})=>{},
     openMenu:false, 
     setOpenMenu:(v:boolean)=>{},
+    addNewRow:()=>{},
+    addNewColumn:()=>{}
 });
 
 const RootContextProvider:React.FunctionComponent<IRootContextProvider> = ({children})=>{
